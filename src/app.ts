@@ -1,4 +1,5 @@
 import express, { type Application } from "express";
+import { userRoute } from "./modules/user/user.route";
 
 const app: Application = express();
 
@@ -10,5 +11,9 @@ app.get("/", (req, res) => {
     author: "Uhaimong/Next Level Developer",
   });
 });
+
+// All route
+
+app.use("/api/auth", userRoute);
 
 export default app;
