@@ -1,11 +1,11 @@
 import app from "./app";
-import { iniDb } from "./config/db/db";
+import { initDb } from "./config/db/db";
 import { envConfig } from "./config/env";
 
 const PORT = envConfig.port;
 
 (async () => {
-  await iniDb();
+  await initDb();
   app.listen(PORT, () => {
     console.log(`Server is live now on: ${PORT}`);
   });

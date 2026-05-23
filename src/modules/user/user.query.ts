@@ -14,3 +14,12 @@ export const createUserQuery = async (
   const result = await pool.query(sql, [name, email, password, role]);
   return result.rows[0];
 };
+
+// id: number | string;
+// title: string;
+// description: string;
+// type: string;
+// status: string;
+// reporter_id: number | string;
+// created_at: Date;
+// updated_at: Date;
