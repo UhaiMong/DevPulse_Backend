@@ -224,19 +224,20 @@ Retrieve all issues with optional sorting and filtering
 ```json
 {
   "success": true,
+  "message": "Issue retrieved successfully",
   "data": {
-    "id": 45,
+    "id": 2,
     "title": "Database connection timeout under load",
     "description": "Pool exhausts after 50+ concurrent queries, causing 500 errors",
     "type": "bug",
     "status": "open",
+    "created_at": "2026-05-23T01:39:32.821Z",
+    "updated_at": "2026-05-23T01:39:32.821Z",
     "reporter": {
       "id": 1,
       "name": "John Doe",
       "role": "contributor"
-    },
-    "created_at": "2026-01-20T10:30:00Z",
-    "updated_at": "2026-01-20T14:45:00Z"
+    }
   }
 }
 ```

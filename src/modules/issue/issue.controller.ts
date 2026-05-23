@@ -51,8 +51,34 @@ const getAllIssues = async (req: Request, res: Response) => {
     });
   }
 };
+const getSingleIssue = async (req: Request, res: Response) => {
+  try {
+    const result = await issueServices.getSingleIssue(Number(req.params.id));
+
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: "Issue not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Issue retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve issue",
+      error: error.message,
+    });
+  }
+};
 
 export const issueController = {
   createIssue,
   getAllIssues,
+  getSingleIssue,
 };

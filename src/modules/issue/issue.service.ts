@@ -24,6 +24,9 @@ const createIssue = async (
 const getAllIssues = async (query: any) => {
   const { ...q } = query;
   const allIssues = issuesQuery.getAllIssues(q);
+  if ((await allIssues).length === 0) {
+    throw new Error("Issue not found");
+  }
   const issuesWithRepoter = await Promise.all(
     (await allIssues).map(async (issue) => {
       const reporter = await userQueries.getSingleUserById(issue.reporter_id);
@@ -31,6 +34,15 @@ const getAllIssues = async (query: any) => {
     }),
   );
   return issuesWithRepoter;
+};
+
+// Get Signle issue by Id
+
+const getSingleIssue = async (id: number) => {
+  const singleIsue = await issuesQuery.getIssueById(id);
+  const reporter = await userQueries.getSingleUserById(singleIsue.reporter_id);
+  const { reporter_id, ...withoutReporterId } = singleIsue;
+  return { ...withoutReporterId, reporter };
 };
 
 // Update issues
@@ -83,4 +95,5 @@ export const issueServices = {
   updateIssue,
   deleteIssue,
   getAllIssues,
+  getSingleIssue,
 };
