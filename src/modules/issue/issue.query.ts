@@ -4,19 +4,13 @@ import type { IIssue } from "./issue.interface";
 const createIssueQuery = async (
   payload: Omit<IIssue, "id" | "created_at" | "updated_at">,
 ) => {
-  const { title, description, type, status, reporter_id } = payload;
+  const { title, description, type, reporter_id } = payload;
   const sql = `
-    INSERT INTO issues(title, description,type,status,reporter_id)
-    VALUES($1,$2,$3,$4,$5)
+    INSERT INTO issues(title, description,type,reporter_id)
+    VALUES($1,$2,$3,$4)
     RETURNING *
     `;
-  const result = await pool.query(sql, [
-    title,
-    description,
-    type,
-    status,
-    reporter_id,
-  ]);
+  const result = await pool.query(sql, [title, description, type, reporter_id]);
   return result.rows[0];
 };
 

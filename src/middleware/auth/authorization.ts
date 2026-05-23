@@ -1,6 +1,6 @@
 import { USERROLE } from "../../modules/user/user.constant";
 
-export const issueModify = (
+export const isAllowed = (
   reporter_id: number,
   user: {
     id: number;

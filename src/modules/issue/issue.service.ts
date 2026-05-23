@@ -1,4 +1,4 @@
-import { issueModify } from "../../middleware/auth/authorization";
+import { isAllowed } from "../../middleware/auth/authorization";
 import { userQueries } from "../user/user.query";
 import { ISSUESTATUS, ISSUETYPE } from "./issue.constant";
 import type { IIssue } from "./issue.interface";
@@ -12,10 +12,8 @@ const createIssue = async (
     role: string;
   },
 ) => {
-  const authorized = issueModify(payload.reporter_id, user);
-  if (!authorized) {
-    throw new Error("Forbidden Access!");
-  }
+  payload.reporter_id = user.id;
+
   return await issuesQuery.createIssueQuery(payload);
 };
 
@@ -61,7 +59,7 @@ const updateIssue = async (
     throw new Error("Issue not found!");
   }
 
-  const authorized = issueModify(issue.reporter_id, user);
+  const authorized = isAllowed(issue.reporter_id, user);
   if (!authorized) {
     throw new Error("Forbidden Access!");
   }
@@ -82,7 +80,7 @@ const deleteIssue = async (
     throw new Error("Issue not found!");
   }
 
-  const authorized = issueModify(issue.reporter_id, user);
+  const authorized = isAllowed(issue.reporter_id, user);
   if (!authorized) {
     throw new Error("Forbidden Access!");
   }
