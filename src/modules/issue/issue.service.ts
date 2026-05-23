@@ -1,4 +1,5 @@
 import { issueModify } from "../../middleware/auth/authorization";
+import { userQueries } from "../user/user.query";
 import { ISSUESTATUS, ISSUETYPE } from "./issue.constant";
 import type { IIssue } from "./issue.interface";
 import { issuesQuery } from "./issue.query";
@@ -23,7 +24,13 @@ const createIssue = async (
 const getAllIssues = async (query: any) => {
   const { ...q } = query;
   const allIssues = issuesQuery.getAllIssues(q);
-  return allIssues;
+  const issuesWithRepoter = await Promise.all(
+    (await allIssues).map(async (issue) => {
+      const reporter = await userQueries.getSingleUserById(issue.reporter_id);
+      return { ...issue, reporter };
+    }),
+  );
+  return issuesWithRepoter;
 };
 
 // Update issues
@@ -33,6 +40,7 @@ const updateIssue = async (
   payload: Pick<IIssue, "title" | "description" | "type" | "status">,
   user: {
     id: number;
+    name: string;
     role: string;
   },
 ) => {

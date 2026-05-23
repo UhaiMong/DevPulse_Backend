@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import type { IUser } from "./user.interface";
-import { createUserQuery } from "./user.query";
+import { userQueries } from "./user.query";
 
 export const userService = async (
   payload: Omit<IUser, "id" | "created_at" | "updated_at">,
@@ -11,7 +11,7 @@ export const userService = async (
     ...payload,
     password: hashedPassword,
   };
-  const newUser = await createUserQuery(dbPayload);
+  const newUser = await userQueries.createUserQuery(dbPayload);
   const { password, ...userWithoutPassword } = newUser;
 
   return userWithoutPassword;

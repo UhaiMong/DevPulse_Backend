@@ -49,7 +49,7 @@ const getAllIssues = async (filters: {
 
   if (conditions.length > 0) {
     sql += `
-        WHERE ${conditions.join("AND")}
+        WHERE ${conditions.join(" AND ")}
         `;
   }
   // sorting
@@ -65,7 +65,7 @@ const getAllIssues = async (filters: {
   }
 
   const result = await pool.query(sql, values);
-  return result.rows[0];
+  return result.rows;
 };
 
 // Get issue by Id

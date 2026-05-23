@@ -1,7 +1,7 @@
 import { pool } from "../../config/db";
 import type { IUser } from "./user.interface";
 
-export const createUserQuery = async (
+const createUserQuery = async (
   payload: Omit<IUser, "id" | "created_at" | "updated_at">,
 ) => {
   const { name, email, password, role } = payload;
@@ -13,6 +13,20 @@ export const createUserQuery = async (
 
   const result = await pool.query(sql, [name, email, password, role]);
   return result.rows[0];
+};
+
+const getSingleUserById = async (id: number) => {
+  const sql = `
+SELECT id, name, role FROM users
+WHERE id = $1
+`;
+  const result = await pool.query(sql, [id]);
+  return result.rows[0];
+};
+
+export const userQueries = {
+  createUserQuery,
+  getSingleUserById,
 };
 
 // id: number | string;
