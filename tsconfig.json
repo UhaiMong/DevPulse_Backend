@@ -8,7 +8,7 @@
 
     // Environment Settings
     "target": "esnext",
-    "module": "CommonJS",
+    "module": "esnext",
     "moduleResolution": "bundler",
     "lib": ["ESNext"],
     "types": ["node"],
