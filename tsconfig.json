@@ -7,14 +7,15 @@
     "outDir": "./dist",
 
     // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
     "target": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "bundler",
-    // For nodejs:
-    // "lib": ["esnext"],
+    "lib": ["ESNext"],
     "types": ["node"],
-    // and npm install -D @types/node
+
+    // Interop
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 
     // Other Outputs
     "sourceMap": true,
@@ -35,10 +36,7 @@
 
     // Recommended Options
     "strict": true,
-    // "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
   }
