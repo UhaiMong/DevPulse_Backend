@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { issueServices } from "./issue.service";
+import { userQueries } from "../user/user.query";
 
 // Create issue controller
 const createIssue = async (req: Request, res: Response) => {
@@ -51,6 +52,7 @@ const getAllIssues = async (req: Request, res: Response) => {
     });
   }
 };
+// Get single issue by id
 const getSingleIssue = async (req: Request, res: Response) => {
   try {
     const result = await issueServices.getSingleIssue(Number(req.params.id));
@@ -77,8 +79,46 @@ const getSingleIssue = async (req: Request, res: Response) => {
   }
 };
 
+// Get update issue by id: only contributor and maintainer
+
+const updateIssue = async (req: Request, res: Response) => {
+  try {
+    const issueId = parseInt(req.params.id as any, 10);
+    const user = {
+      id: req.user.id,
+      role: req.user.role,
+    };
+    // payload from request body
+    const payload = {
+      title: req.body.title as string,
+      description: req.body.description as string,
+      type: req.body.type as string,
+      status: req.body.status as string,
+    };
+
+    const updatedIssue = await issueServices.updateIssue(
+      payload,
+      issueId,
+      user,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Issue updated successfully",
+      data: updatedIssue,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update issue",
+      error: error.message,
+    });
+  }
+};
+
 export const issueController = {
   createIssue,
   getAllIssues,
   getSingleIssue,
+  updateIssue,
 };

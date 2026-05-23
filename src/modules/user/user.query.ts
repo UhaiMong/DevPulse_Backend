@@ -28,12 +28,3 @@ export const userQueries = {
   createUserQuery,
   getSingleUserById,
 };
-
-// id: number | string;
-// title: string;
-// description: string;
-// type: string;
-// status: string;
-// reporter_id: number | string;
-// created_at: Date;
-// updated_at: Date;

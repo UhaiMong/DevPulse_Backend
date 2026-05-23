@@ -45,14 +45,13 @@ const getSingleIssue = async (id: number) => {
   return { ...withoutReporterId, reporter };
 };
 
-// Update issues
+// Update issues service
 
 const updateIssue = async (
+  payload: Partial<Pick<IIssue, "title" | "description" | "type" | "status">>,
   issueId: number,
-  payload: Pick<IIssue, "title" | "description" | "type" | "status">,
   user: {
     id: number;
-    name: string;
     role: string;
   },
 ) => {

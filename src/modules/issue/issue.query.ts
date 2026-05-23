@@ -84,7 +84,7 @@ const getIssueById = async (issueId: number) => {
 // Update issue by Id
 
 const updateIssue = async (
-  payload: Pick<IIssue, "title" | "description" | "type" | "status">,
+  payload: Partial<Pick<IIssue, "title" | "description" | "type" | "status">>,
   issueId: number,
 ) => {
   const { title, description, type, status } = payload;

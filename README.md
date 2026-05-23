@@ -275,14 +275,14 @@ Authorization: JWT token
   "success": true,
   "message": "Issue updated successfully",
   "data": {
-    "id": 45,
+    "id": 2,
     "title": "Updated: Database pool exhaustion fix needed",
     "description": "Updated description with reproduction steps...",
     "type": "bug",
-    "status": "in_progress",
+    "status": "open",
     "reporter_id": 1,
-    "created_at": "2026-01-20T10:30:00Z",
-    "updated_at": "2026-01-20T14:45:00Z"
+    "created_at": "2026-05-23T01:39:32.821Z",
+    "updated_at": "2026-05-23T06:43:18.937Z"
   }
 }
 ```
