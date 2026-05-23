@@ -2,9 +2,30 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["src/server.ts"],
-  format: ["cjs"], // CommonJS output — no extension issues
+
+  format: ["esm"], // Keep this as ESM
+
+  target: "esnext",
+
   outDir: "dist",
-  clean: true, // cleans dist before each build
+
+  clean: true,
+
+  bundle: true,
+
+  splitting: false,
+
   sourcemap: true,
-  minify: false,
+
+  // Add this banner to shim require() for CJS dependencies
+
+  banner: {
+    js: `
+
+   import { createRequire } from 'module';
+
+   const require = createRequire(import.meta.url);
+
+  `,
+  },
 });

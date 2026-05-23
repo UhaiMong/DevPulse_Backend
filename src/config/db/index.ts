@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { envConfig } from "../env";
 
 export const pool = new Pool({
-  connectionString: envConfig.neondb_uri,
+  connectionString: `${envConfig.neondb_uri}?sslmode=verify-full`,
 });
 
 pool.on("connect", () => {

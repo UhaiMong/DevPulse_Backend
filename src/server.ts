@@ -1,8 +1,12 @@
 import app from "./app";
 import { initDb } from "./config/db/db";
+import { envConfig } from "./config/env";
 
-(async () => {
-  await initDb();
-})();
+const main = () => {
+  initDb();
+  app.listen(envConfig.port, () => {
+    console.log(`DevPulse app listening on port ${envConfig.port}`);
+  });
+};
 
-export default app;
+main();
