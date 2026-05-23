@@ -79,7 +79,7 @@ const getSingleIssue = async (req: Request, res: Response) => {
   }
 };
 
-// Get update issue by id: only contributor and maintainer
+// Get update issue by id: only contributor&&status=open and maintainer->super power
 
 const updateIssue = async (req: Request, res: Response) => {
   try {
@@ -108,7 +108,10 @@ const updateIssue = async (req: Request, res: Response) => {
       data: updatedIssue,
     });
   } catch (error: any) {
-    res.status(500).json({
+    const isForbidden =
+      error.message.includes("Forbidden") ||
+      error.message.includes("Cannot update");
+    res.status(isForbidden ? 403 : 500).json({
       success: false,
       message: "Failed to update issue",
       error: error.message,
@@ -132,7 +135,8 @@ const deleteIssueById = async (req: Request, res: Response) => {
       message: "Issue deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    const isForbidden = (error as any).message.includes("Forbidden");
+    res.status(isForbidden ? 403 : 500).json({
       success: false,
       message: "Failed to delete issue",
       error: (error as any).message,

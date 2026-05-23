@@ -10,9 +10,15 @@ const createUserQuery = async (
     VALUES($1,$2,$3,$4)
     RETURNING id, name, email, role, created_at, updated_at
     `;
-
-  const result = await pool.query(sql, [name, email, password, role]);
-  return result.rows[0];
+  try {
+    const result = await pool.query(sql, [name, email, password, role]);
+    return result.rows[0];
+  } catch (error) {
+    if ((error as any).code === "23505") {
+      throw new Error("EMAIL_EXISTS");
+    }
+    throw error;
+  }
 };
 
 const getSingleUserById = async (id: number) => {

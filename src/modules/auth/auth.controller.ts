@@ -15,12 +15,17 @@ const loginUser = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: `Internal server error: ${error?.message}`,
-      error: error,
-      data: {},
-    });
+    if (error.message === "This user doesn't exist!") {
+      res.status(404).json({
+        success: false,
+        message: "This user doesn't exist!",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: `Internal server error: ${error?.message}`,
+      });
+    }
   }
 };
 

@@ -8,9 +8,22 @@ const app: Application = express();
 
 app.use(express.json());
 
+const allowedOrigins = [
+  "http://localhost:5000",
+  "http://localhost:3000",
+  "https://devpulse-backend-gamma.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   }),
 );
 

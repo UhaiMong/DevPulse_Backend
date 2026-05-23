@@ -12,12 +12,13 @@ const createUser = async (req: Request, res: Response) => {
       data: newUser,
     });
   } catch (error) {
-    (console.error(error),
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        data: {},
-      }));
+    if ((error as any).message === "This email is already registered") {
+      res.status(400).json({ success: false, message: (error as any).message });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
   }
 };
 

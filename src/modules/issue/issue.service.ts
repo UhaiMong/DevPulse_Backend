@@ -1,4 +1,8 @@
-import { isAllowed } from "../../middleware/auth/authorization";
+import {
+  isAllowed,
+  isAllowedToDelete,
+} from "../../middleware/auth/authorization";
+import { USERROLE } from "../user/user.constant";
 import { userQueries } from "../user/user.query";
 import { ISSUESTATUS, ISSUETYPE } from "./issue.constant";
 import type { IIssue } from "./issue.interface";
@@ -28,7 +32,8 @@ const getAllIssues = async (query: any) => {
   const issuesWithRepoter = await Promise.all(
     (await allIssues).map(async (issue) => {
       const reporter = await userQueries.getSingleUserById(issue.reporter_id);
-      return { ...issue, reporter };
+      const { reporter_id, ...withoutReporterId } = issue;
+      return { ...withoutReporterId, reporter };
     }),
   );
   return issuesWithRepoter;
@@ -59,10 +64,15 @@ const updateIssue = async (
     throw new Error("Issue not found!");
   }
 
-  const authorized = isAllowed(issue.reporter_id, user);
+  const authorized = isAllowed(issue.reporter_id, user, issue.status);
   if (!authorized) {
-    throw new Error("Forbidden Access!");
+    throw new Error(
+      user.role === USERROLE.CONTRIBUTOR && issue.reporter_id !== user.id
+        ? "Forbidden Acess!!"
+        : "Issue is not open",
+    );
   }
+
   return await issuesQuery.updateIssue(payload, issueId);
 };
 
@@ -80,8 +90,9 @@ const deleteIssue = async (
     throw new Error("Issue not found!");
   }
 
-  const authorized = isAllowed(issue.reporter_id, user);
-  if (!authorized) {
+  const allowed = isAllowedToDelete(issue.reporter_id, user);
+
+  if (!allowed) {
     throw new Error("Forbidden Access!");
   }
   return await issuesQuery.deleteIssueQuery(issueId);

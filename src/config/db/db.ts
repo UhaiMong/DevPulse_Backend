@@ -5,7 +5,7 @@ export const initDb = async () => {
     CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
         name VARCHAR(30),
-        email VARCHAR(30),
+        email VARCHAR(30) UNIQUE,
         password TEXT NOT NULL,
         role VARCHAR(20) DEFAULT 'contributor',
         created_at TIMESTAMP DEFAULT NOW(),
