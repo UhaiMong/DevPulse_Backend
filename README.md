@@ -325,7 +325,7 @@ https://github.com/UhaiMong/DevPulse_Backend.git
 #### Live Deployment on Vercel:
 
 ```code
-https://devpulse-api.vercel.app
+https://devpulse-backend-gamma.vercel.app
 ```
 
 ---
